@@ -7,7 +7,7 @@ import passport from "passport";
 import dotenv from "dotenv";
 dotenv.config();
 import "./src/database.js";
-import { PORT } from "./src/utils/port.js";
+//import { PORT } from "./src/utils/port.js";
 import { routerInfo, routerHandlebars } from "./src/routes/routes.js";
 import { loginStrategy, signupStrategy } from "./src/middlewares/passportLocal.js";
 import compression from "compression";
@@ -80,9 +80,9 @@ app.get('*', (req, res) => {
 // }
 
 
-//const PORT = process.env.PORT;
+const PORT = process.env.PORT;
 const server = app.listen(PORT, () => {
-    logger.info(`🚀 Server started at http://localhost:${PORT}`)
+    logger.info(`Server started at http://localhost:${PORT}`)
     })
     
 server.on('error', (err) => logger.error(err));

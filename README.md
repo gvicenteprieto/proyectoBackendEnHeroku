@@ -1,4 +1,1 @@
-### LOGGERS, GZIP y ANÁLISIS DE PERFORMANCE
-
-
-
+### Proyecto deployado en Heroku
