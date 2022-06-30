@@ -7,7 +7,7 @@ import passport from "passport";
 import dotenv from "dotenv";
 dotenv.config();
 import "./src/database.js";
-//import { PORT } from "./src/utils/port.js";
+import { PORT } from "./src/utils/port.js";
 import { routerInfo, routerHandlebars } from "./src/routes/routes.js";
 import { loginStrategy, signupStrategy } from "./src/middlewares/passportLocal.js";
 import compression from "compression";
@@ -33,6 +33,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   rolling: true,
+  cookie: {
+    httpOnly: false,
+    secure: false,
+    maxAge: Number(process.env.EXPIRATION_TIME) || 60 * 60 * 1000
+},
 }));
 
 passport.use('login', loginStrategy);
@@ -65,25 +70,25 @@ app.get('*', (req, res) => {
 });
 
 /*============================[Servidor]============================*/
+//const PORT = process.env.PORT;
+if (serverMode == "CLUSTER") {
+  logger.info(`Primary: ${process.pid}`)
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork()
+  }
+  cluster.on('listening', (worker, address) => {
+    logger.info(`worker ${worker.process.pid} connected to ${address.port}`)
+  })
+} else {
+  app
+    .listen(PORT, () => logger.info(`Worker: ${process.pid} at http://localhost:${PORT} mode: ${serverMode}`))
+    .on('error', (err) => logger.error(err));
+}
 
-// if (serverMode == "CLUSTER") {
-//   logger.info(`Primary: ${process.pid}`)
-//   for (let i = 0; i < numCPUs; i++) {
-//     cluster.fork()
-//   }
-//   cluster.on('listening', (worker, address) => {
-//     logger.info(`worker ${worker.process.pid} connected to ${address.port}`)
-//   })
-// } else {
-//   app
-//     .listen(PORT, () => logger.info(`Worker: ${process.pid} at http://localhost:${PORT} mode: ${serverMode}`))
-//     .on('error', (err) => logger.error(err));
-// }
 
+// const PORT = process.env.PORT;
+// const server = app.listen(PORT, () => {
+//   logger.info(`Server started at http://localhost:${PORT}`)
+// })
 
-const PORT = process.env.PORT;
-const server = app.listen(PORT, () => {
-  logger.info(`Server started at http://localhost:${PORT}`)
-})
-
-server.on('error', (err) => logger.error(err));
+// server.on('error', (err) => logger.error(err));
