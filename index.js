@@ -65,6 +65,7 @@ app.get('*', (req, res) => {
 });
 
 /*============================[Servidor]============================*/
+
 // if (serverMode == "CLUSTER") {
 //   logger.info(`Primary: ${process.pid}`)
 //   for (let i = 0; i < numCPUs; i++) {
@@ -82,7 +83,7 @@ app.get('*', (req, res) => {
 
 const PORT = process.env.PORT;
 const server = app.listen(PORT, () => {
-    logger.info(`Server started at http://localhost:${PORT}`)
-    })
-    
+  logger.info(`Server started at http://localhost:${PORT}`)
+})
+
 server.on('error', (err) => logger.error(err));
