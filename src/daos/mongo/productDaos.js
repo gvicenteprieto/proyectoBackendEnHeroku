@@ -1,47 +1,81 @@
-//import database from "./src/database.js";
-import { Product } from "../../models/Product.js";
+import Mongo from "../../models/Mongo.js";
+import Products from "../../class/classProducts.js";
 import logger from "../../utils/loggers.js";
 import moment from "moment";
 
-export const productDaos = {
+export class productDaos  {
+    constructor() {
+        this.mongo = new Mongo();
+        this.products = new Products();
+    }
+    async getAllProducts() {
+        try {
+            const products = await this.products.getAllProducts();
+            return products;
+        } catch (err) {
+            logger.error(err);
+            return err;
+        }
+    }
+    async saveProduct(product) {
+        try {
+            const newProduct = {
+                timestamp: moment().format("YYYY-MM-DD HH:mm:ss"),
+                name: product.name,
+                price: product.price,
+                description: product.description,
+                url: product.url,
+                code: product.code,
+                stock: product.stock,
+                createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+                updatedAt: moment().format("YYYY-MM-DD HH:mm:ss")
+            };
+            const productCreated = await this.products.saveProduct(newProduct);
+            return productCreated;
+        } catch (err) {
+            logger.error(err);
+            return err;
+        }
+    }
 
-    getAllProducts: async () => {
-        logger.info(`Se registra petición GET /productos`);
-        const products = await Product.find({});
-        logger.info(`Se obtienen productos`);
-        return products;
-    },
-
-    getProductById: async (id) => {
-        logger.info(`Se registra petición GET /productos/${id}`);
-        const product = await Product.findById(id);
-        logger.info(`Se obtiene producto`);
-        return product;
-    },
-
-    createProduct: async (product) => {
-        logger.info(`Se registra petición POST /productos`);
-        const newProduct = new Product(product);
-        newProduct.createdAt = moment().format("YYYY-MM-DD HH:mm:ss");
-        newProduct.updatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
-        const productCreated = await newProduct.save();
-        logger.info(`Se crea producto`);
-        return productCreated;
-    },
-
-    updateProduct: async (id, product) => {
-        logger.info(`Se registra petición PUT /productos/${id}`);
-        const productUpdated = await Product.findByIdAndUpdate(id, product, { new: true });
-        logger.info(`Se actualiza producto`);
-        return productUpdated;
-    },
-
-    deleteProduct: async (id) => {
-        logger.info(`Se registra petición DELETE /productos/${id}`);
-        const productDeleted = await Product.findByIdAndDelete(id);
-        logger.info(`Se elimina producto`);
-        return productDeleted;
+    async getProductById(id) {
+        try {
+            const product = await this.products.getProductById(id);
+            return product;
+        } catch (err) {
+            logger.error(err);
+            return err;
+        }
+    }
+    async updateProduct(id, product) {
+        try {
+            const updatedProduct = {
+                timestamp: moment().format("YYYY-MM-DD HH:mm:ss"),
+                name: product.name,
+                price: product.price,
+                description: product.description,
+                url: product.url,
+                code: product.code,
+                stock: product.stock,
+                updatedAt: moment().format("YYYY-MM-DD HH:mm:ss")
+            };
+            const productUpdated = await this.products.updateProduct(id, updatedProduct);
+            return productUpdated;
+        } catch (err) {
+            logger.error(err);
+            return err;
+    }
+    }
+    async deleteProduct(id) {
+        try {
+            const product = await this.products.deleteProduct(id);
+            return product;
+        } catch (err) {
+            logger.error(err);
+            return err;
+        }
     }
 }
+export default productDaos;
 
-
+        

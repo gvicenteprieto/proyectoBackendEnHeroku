@@ -5,7 +5,7 @@ dotenv.config();
 
 //const mongoDB_URI = process.env.MONGO_URI || "mongodb://localhost:27017/3E_DB";
 
-const mongoDB_URI = "mongodb://localhost:27017/3E_DB";
+const mongoDB_URI =  "mongodb://localhost:27017/3E_DB";
 
 (async () => {
     try {

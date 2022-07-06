@@ -26,7 +26,7 @@ if (process.argv[2] === "PROD") {
 } else if (process.argv[2] === "DEV") {
     logger = Log4js.getLogger("dev");
 } else {
-    logger = Log4js.getLogger("PROD");
+    logger = Log4js.getLogger("default");
 }
 
 export default logger;
