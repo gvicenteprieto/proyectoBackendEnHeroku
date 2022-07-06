@@ -7,7 +7,8 @@ import passport from "passport";
 import dotenv from "dotenv";
 dotenv.config();
 import "./src/database.js";
-//import { PORT } from "./src/utils/port.js";
+import { PORT } from "./src/utils/port.js";
+//import { routerNodemailer } from "./src/routes/index.js";
 import { routerInfo, routerHandlebars } from "./src/routes/routes.js";
 import { loginStrategy, signupStrategy } from "./src/middlewares/passportLocal.js";
 import compression from "compression";
@@ -20,8 +21,17 @@ const numCPUs = os.cpus().length;
 const argv = minimist(process.argv.slice(2))
 const serverMode = argv.mode || "FORK";
 
+import routeProduct from "./src/routes/routeProduct.js"; 
+import routeCart from "./src/routes/routeCart.js";
+
 const app = express();
 
+import sendMail from "./src/utils/messagesMail.js";
+import sendWhatsApp from "./src/utils/messagesWhatsApp.js";
+import sendSMS from "./src/utils/messagesSMS.js";
+
+// app.use(routerNodemailer)
+// app.use(express.static('public'));
 /*============================[Middlewares]============================*/
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -60,7 +70,12 @@ app.set('views', './views');
 /*============================[Rutas Info]============================*/
 app.use('/', routerInfo);
 /*============================[Rutas Views]============================*/
-app.use('/', routerHandlebars);
+app.use('/', routerHandlebars)
+/*============================[Rutas Productos]============================*/;
+app.use('/api', routeProduct);
+/*============================[Rutas Carritos]============================*/;
+app.use('/api', routeCart);
+
 
 app.get('*', (req, res) => {
   logger.warn({
@@ -70,7 +85,7 @@ app.get('*', (req, res) => {
 });
 
 /*============================[Servidor]============================*/
-const PORT = process.env.PORT;
+//const PORT = process.env.PORT;
 if (serverMode == "CLUSTER") {
   logger.info(`Primary: ${process.pid}`)
   for (let i = 0; i < numCPUs; i++) {
@@ -86,9 +101,12 @@ if (serverMode == "CLUSTER") {
 }
 
 
-// const PORT = process.env.PORT;
 // const server = app.listen(PORT, () => {
 //   logger.info(`Server started at http://localhost:${PORT}`)
 // })
 
-// server.on('error', (err) => logger.error(err));
+// server.on('err
+
+/*============================[Exportar]============================*/
+// postman: 
+// https://www.getpostman.com/collections/6afb21b1dc1feeeaf15e

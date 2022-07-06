@@ -8,10 +8,14 @@ const client = twilio(accountSid, authToken);
 const telFrom = process.env.TWILIO_PHONE_NUMBER_SMS;
 const telTo = process.env.PHONE_NUMBER;
 
-client.messages
-    .create({
-        body: 'Mensaje de Bienvenida! utilizando el servicio de Twilio',
-        from: telFrom,
-        to: telTo
-    })
-    .then(message => console.log(message.sid));
+const sendSMS = async (text) => {
+    client.messages
+        .create({
+            body: 'Mensaje de Bienvenida! utilizando el servicio de Twilio',
+            from: telFrom,
+            to: telTo
+        })
+        .then(message => console.log(message.sid));
+}
+
+export default sendSMS;
