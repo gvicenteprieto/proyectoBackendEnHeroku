@@ -1,8 +1,17 @@
+// import CartController from "../controllers/cartController.js";
+// const cartController = new CartController();
 
 import logger from "../utils/loggers.js";
 import { Cart } from "../models/Cart.js";
 import { Router } from "express";
 export const routeCart = Router();
+
+// routeCart.get("/carrito", cartController.getAllCarts);
+// routeCart.post("/carrito", cartController.createCart);
+// routeCart.get("/carrito/:id", cartController.getCartById);
+// routeCart.put("/carrito/:id", cartController.updateCart);
+// routeCart.delete("/carrito/:id", cartController.deleteCart);
+
 
 routeCart
     .get('/carrito', (req, res) => {

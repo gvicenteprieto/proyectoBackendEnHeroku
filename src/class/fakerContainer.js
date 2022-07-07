@@ -7,7 +7,11 @@ function generateRandomProduct(cant = 5) {
             id: i+1,
             name: faker.commerce.productName(),
             price: faker.commerce.price(),
-            url: faker.internet.url()
+            stock: faker.random.numeric(2),
+            description: faker.commerce.productDescription(),
+            url: faker.internet.url(),
+            code: faker.random.alphaNumeric(10),
+            timestamp: Date.now()
         }
         listProducts.push(prod); 
     }

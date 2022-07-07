@@ -1,112 +1,74 @@
-import { productDaos } from "../daos/mongo/productDaos.js";
+import ProductsClass from "../class/classProducts.js";
+const productsClass = new ProductsClass();
 import logger from "../utils/loggers.js";
-export const productController = {
-  getAllProducts: async () => {
-    logger.info(`Se registra petición GET /productos`);
-    const products = await productDaos.getAllProducts();
-    logger.info(`Se obtienen productos`);
-    return products;
-  },
+import generateRandomProduct from "../class/fakerContainer.js";
+const listFaker = generateRandomProduct(10);
 
-  getProductById: async (id) => {
-    logger.info(`Se registra petición GET /productos/${id}`);
-    const product = await productDaos.getProductById(id);
-    logger.info(`Se obtiene producto`);
-    return product;
-  },
-
-  createProduct: async (product) => {
-    logger.info(`Se registra petición POST /productos`);
-    const newProduct = new Product(product);
-    newProduct.createdAt = moment().format("YYYY-MM-DD HH:mm:ss");
-    newProduct.updatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
-    const productCreated = await newProduct.save();
-    logger.info(`Se crea producto`);
-    return productCreated;
-  },
-
-  updateProduct: async (id, product) => {
-    logger.info(`Se registra petición PUT /productos/${id}`);
-    const productUpdated = await productDaos.updateProduct(id, product);
-    logger.info(`Se actualiza producto`);
-    return productUpdated;
-  },
-
-  deleteProduct: async (id) => {
-    logger.info(`Se registra petición DELETE /productos/${id}`);
-    const productDeleted = await productDaos.deleteProduct(id);
-    logger.info(`Se elimina producto`);
-    return productDeleted;
+class ProductController {
+  
+  async getAllProducts (req, res) {
+    try {
+      logger.info(`Se registra petición GET /productos`)
+      //const list = listFaker
+      const productos = await productsClass.getAllProducts()
+      //let listProducts = list.concat (productos)
+      logger.info(`Se obtienen productos`)
+      //res.json(listProducts)
+      res.json(productos)
+    }
+    catch (err) {
+      logger.error(`Error al obtener productos`)
+      throw err
+    }
+  }
+  async createProduct (req, res) {
+    try {
+      logger.info(`Se registra petición POST /productos`)
+      const productoCreado = await productsClass.createProduct(req.body)
+      logger.info(`Se crea producto`)
+      res.json(productoCreado)
+    }
+    catch (err) {
+      logger.error(`Error al crear producto`)
+      throw err
+    }
+  }
+  async getProductById (req, res) {
+    try {
+      logger.info(`Se registra petición GET /productos/${req.params.id}`)
+      const producto = await productsClass.getProductById(req.params.id)
+      logger.info(`Se obtiene producto`)
+      res.json(producto)
+    }
+    catch (err) {
+      logger.error(`Error al obtener producto`)
+      throw err
+    }
+  }
+  async updateProduct (req, res) {
+    try {
+      logger.info(`Se registra petición PUT /productos/${req.params.id}`)
+      const productoActualizado = await productsClass.updateProduct(req.params.id, req.body)
+      logger.info(`Se actualiza producto`)
+      res.json(productoActualizado)
+    }
+    catch (err) {
+      logger.error(`Error al actualizar producto`)
+      throw err
+    }
+  }
+  async deleteProduct (req, res) {
+    try {
+      logger.info(`Se registra petición DELETE /productos/${req.params.id}`)
+      const productoEliminado = await productsClass.deleteProduct(req.params.id)
+      logger.info(`Se elimina producto`)
+      res.json(productoEliminado)
+    }
+    catch (err) {
+      logger.error(`Error al eliminar producto`)
+      throw err
+    }
   }
 }
 
-
-
-
-
-
-
-
-
-// class productController {
-//   constructor() {
-//     this.product = [];
-//   }
-
-//   async getAllProducts() {
-//     try {
-//       const listProducts = await product.getAllProducts();
-//       return listProducts;
-//     } catch (err) {
-//       return err;
-//     }
-//   }
-
-//   async createProduct(product) {
-//     try {
-//       const newProduct = {
-//         id: product.id,
-//         name: product.name,
-//         price: product.price,
-//         description: product.description,
-//         url: product.url,
-//         createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-//         updatedAt: moment().format("YYYY-MM-DD HH:mm:ss")
-//       };
-//       await product.createProduct(newProduct);
-//       return newProduct;
-//     } catch (err) {
-//       return err;
-//     }
-//   }
-
-//   async getProductById(id) {
-//     try {
-//       const product = await product.getProductById(id);
-//       return product;
-//     } catch (err) {
-//       return err;
-//     }
-//   }
-
-//   async updateProduct(id, product) {
-//     try {
-//       const updatedProduct = await product.updateProduct(id, product);
-//       return updatedProduct;
-//     } catch (err) {
-//       return err;
-//     }
-//   }
-
-//   async deleteProduct(id) {
-//     try {
-//       const deletedProduct = await product.deleteProduct(id);
-//       return deletedProduct;
-//     } catch (err) {
-//       return err;
-//     }
-//   }
-
-// }
-
-// export default new productController();
+export default ProductController 
