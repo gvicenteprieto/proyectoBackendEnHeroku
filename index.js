@@ -43,11 +43,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   rolling: true,
-//   cookie: {
-//     httpOnly: false,
-//     secure: false,
-//     maxAge: Number(process.env.EXPIRATION_TIME) || 60 * 60 * 1000
-// },
+  cookie: {
+    httpOnly: false,
+    secure: false,
+    maxAge: Number(process.env.EXPIRATION_TIME) || 60 * 60 * 1000
+},
 }));
 
 passport.use('login', loginStrategy);
