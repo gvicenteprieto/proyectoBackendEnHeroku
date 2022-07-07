@@ -9,7 +9,11 @@ const mongoDB_URI = process.env.MONGO_URI || "mongodb://localhost:27017/3E_DB";
 
 (async () => {
     try {
-        const db = await mongoose.connect(mongoDB_URI)
+        const db = mongoose.connect(mongoDB_URI
+            , {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            })
         logger.info('Conectado a mongoDB ' + db.connection.host + ':' + db.connection.port + '/' + db.connection.name);
     } catch (error) {
         logger.error(error);
