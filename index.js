@@ -86,28 +86,28 @@ app.get('*', (req, res) => {
 
 /*============================[Servidor]============================*/
 //const PORT = process.env.PORT;
-// if (serverMode == "CLUSTER") {
-//   logger.info(`Primary: ${process.pid}`)
-//   for (let i = 0; i < numCPUs; i++) {
-//     cluster.fork()
-//   }
-//   cluster.on('listening', (worker, address) => {
-//     logger.info(`worker ${worker.process.pid} connected to ${address.port}`)
-//   })
-// } else {
-//   app
-//     .listen(PORT, () => logger.info(`Worker: ${process.pid} at http://localhost:${PORT} mode: ${serverMode}`))
-//     .on('error', (err) => logger.error(err));
-// }
+if (serverMode == "CLUSTER") {
+  logger.info(`Primary: ${process.pid}`)
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork()
+  }
+  cluster.on('listening', (worker, address) => {
+    logger.info(`worker ${worker.process.pid} connected to ${address.port}`)
+  })
+} else {
+  app
+    .listen(PORT, () => logger.info(`Worker: ${process.pid} at http://localhost:${PORT} mode: ${serverMode}`))
+    .on('error', (err) => logger.error(err));
+}
 
 
-const server = app.listen(PORT, () => {
-  logger.info(`Server started at http://localhost:${PORT}`)
-})
+// const server = app.listen(PORT, () => {
+//   logger.info(`Server started at http://localhost:${PORT}`)
+// })
 
-server.on('error', (err) => {
-  logger.error(err)
-})
+// server.on('error', (err) => {
+//   logger.error(err)
+// })
 
 
 /*============================[Exportar]============================*/

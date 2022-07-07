@@ -29,6 +29,7 @@ export const signupStrategy = new Strategy(
                 adress: req.body.adress,
                 age: req.body.age,
                 phone: req.body.phone,
+                image: req.body.image,
                 username: req.body.username,
                 email: req.body.email,
                 password: createHash(password),
